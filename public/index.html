@@ -3,23 +3,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socket Test!</title>
+    <title>Sign In</title>
 </head>
 <body>
-    <p>
-        hello!
-    </p>
-    <div id = "chatBox">
-        chat here
-    </div>
-    
-    <div>
-        <form id = chatForm>
-            <input type="text" id = "msg" placeholder = "Type here" required autocomplete = "off">
-            <button> Send</button>
-        </form>
-    </div>
-    <script src = "/socket.io/socket.io.js"></script>
-    <script src = "js/main.js"></script>
+    <form id = "mainForm">
+        <input id = "usernameBox" type="text" name = "username" placeholder = "Enter username" required>
+        <input id = "roomBox" type= "text" name = "room" placeholder = "Room ID" required>
+        <button action = "submit"> Join! </button>
+    </form>
+    <script src = "js/roomSelect.js"></script>
 </body>
 </html>

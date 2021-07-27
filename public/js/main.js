@@ -4,6 +4,16 @@ const input = document.getElementById('msg');
 
 const socket = io();
 
+//redirect
+if(sessionStorage.getItem("room") == null){
+    window.location.href = "/";
+}
+else{
+    socket.emit('joinRoom', {room: sessionStorage.getItem("room"), username: sessionStorage.getItem("username")});
+}
+
+
+
 socket.on('message', (message) =>{
     outputMessage(message);
 })
@@ -12,15 +22,19 @@ socket.on('message', (message) =>{
 chatForm.addEventListener('submit', (e) =>{
     e.preventDefault();
 
-    let msg = input.value;
-    console.log(msg);
-    if(!msg){
+    let msg = {
+        content: input.value,
+        username: sessionStorage.getItem("username"),
+        room: sessionStorage.getItem("room")
+    };
+    //if empty
+    if(!input.value){
         return false;
     }
     
     socket.emit('chatMessage', msg);
-    input.value = " ";
-    //e.target.elements.msg.focus();
+    input.value = "";
+    e.target.elements.msg.focus();
    
 })
 
@@ -28,7 +42,7 @@ chatForm.addEventListener('submit', (e) =>{
 function outputMessage(message){
     const div = document.createElement('div');
     const p = document.createElement('p');
-    p.innerText = message;
+    p.innerText = message.username + ": " + message.content;
     div.appendChild(p);
 
     chatBox.appendChild(div);

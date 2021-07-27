@@ -13,15 +13,26 @@ const io = socketio(server);
 app.use("/", express.static(path.join(__dirname, 'public')));
 
 io.on('connection', socket =>{
-    console.log('New WS connection');
+    socket.on('joinRoom', ({username, room}) =>{
+        socket.join(room);
+        
+        //welcome current user
+        socket.emit('message', {content: "Welcome!", username: "System"});
 
-    socket.emit('message', 'Welcome!');
+        //broadcast to other users
+        socket.broadcast.to(room).emit('message', {content: username + " has joined.", username: "System"});
+
+        
+    });
+    
 
     socket.on('chatMessage', msg =>{
-        io.emit('message', msg);
-        console.log("message emitted");
-    })
-})
+        io.to(msg.room).emit('message', msg);
+    });
+
+    
+});
+
 
 app.get("/", (req, res)=>{
     res.sendFile(path.join(__dirname, "/public/index.html"));
