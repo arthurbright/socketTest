@@ -2,6 +2,14 @@ const { response } = require('express');
 const https = require('https');
 
 function isWord(str, callback){
+    //filter out spaces
+    str = str.trim();
+    if(str.indexOf(' ') > -1){
+        callback(false);
+        return;
+    }
+
+
     let url = 'https://api.dictionaryapi.dev/api/v2/entries/en_US/'
     url = url + str;
 
