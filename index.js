@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
+const dictionary = require('./utils/dictionary.js');
 
 
 const app = express();
@@ -26,8 +27,17 @@ io.on('connection', socket =>{
     });
     
 
-    socket.on('chatMessage', msg =>{
-        io.to(msg.room).emit('message', msg);
+    socket.on('chatMessage', async (msg) =>{
+        dictionary.isWord(msg.content, (b) =>{
+            if(b){
+                io.to(msg.room).emit('message', msg);
+            }
+            console.log(b);
+        })
+        
+        
+        
+        
     });
 
     
