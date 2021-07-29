@@ -1,5 +1,6 @@
 const { response } = require('express');
 const https = require('https');
+const key = '8e42cec7-65c7-405' + 'c-b6b7-999cf3dbe6df'
 
 function isWord(str, callback){
     //filter out spaces
@@ -8,10 +9,11 @@ function isWord(str, callback){
         callback(false);
         return;
     }
+    
 
 
-    let url = 'https://api.dictionaryapi.dev/api/v2/entries/en_US/'
-    url = url + str;
+    let url = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/'
+    url = url + str + '?key=' + key;
 
 
     let resStr = "";
@@ -23,11 +25,11 @@ function isWord(str, callback){
         res.on('end', () =>{
             //data finished sending in resStr
             let data = JSON.parse(resStr);
-            if(data.title === "No Definitions Found"){
-                callback(false);
+            if(data.length > 0 && typeof(data[0]) === "object"){
+                callback(true);
             }
             else{
-                callback(true);
+                callback(false);
             }
         })
     });

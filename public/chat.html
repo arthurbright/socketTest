@@ -3,19 +3,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/chat.css">
     <title>Socket Test!</title>
 </head>
 <body>
-    <div id = "chatBox">
-        chat here
+    <div class = "row">
+        <div class = "column">
+            <div id = "chatBox"></div>
+            
+            <form id = chatForm>
+                <input type="text" id = "msg" placeholder = "Type here" required autocomplete = "off">
+                <button> Send</button>
+            </form>
+        </div>
+
+
+        <!--right column: game content-->
+        <div class = "column">
+            <button id = startButton>Start game!</button>
+            <p id = "gameStatus">Waiting for game start...</p>
+            <p id = "prevWord"></p>
+
+
+            <form id = gameForm>
+                <input type="text" id = "gameFormText" placeholder = "..." required autocomplete = "off">
+                <button>Go!</button>
+            </form>
+        </div>
     </div>
     
-    <div>
-        <form id = chatForm>
-            <input type="text" id = "msg" placeholder = "Type here" required autocomplete = "off">
-            <button> Send</button>
-        </form>
-    </div>
     <script src = "/socket.io/socket.io.js"></script>
     <script src = "js/main.js"></script>
 </body>
