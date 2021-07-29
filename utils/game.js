@@ -35,6 +35,7 @@ class Game{
             }
             else{
                 //valid word submitted
+                this.wordsUsed.push(currentWord);
                 this.prevWord = currentWord;
                 this.prevUsername = currentUser.username;
             }
@@ -64,13 +65,17 @@ class Game{
             this.emitter.on("word", (word)=>{
                 //check validity of word
                 if(word.charAt(0) === this.prevWord.charAt(this.prevWord.length - 1)){
-                    //check if it is a word
-                    dictionary.isWord(word, async (b)=>{
-                        if(b){
-                            res(word);
-                            this.emitter.removeAllListeners('word');
-                        }
-                    });
+                    //check if it was used before
+                    if(!this.wordsUsed.includes(word)){
+                        //check if it is a word
+                        dictionary.isWord(word, async (b)=>{
+                            if(b){
+                                res(word);
+                                this.emitter.removeAllListeners('word');
+                            }
+                        });
+                    }
+                    
                 }
             })
 
