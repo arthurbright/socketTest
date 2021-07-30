@@ -49,11 +49,17 @@ io.on('connection', socket =>{
     });
 
     socket.on('startGame', (id)=>{
+        console.log(game.games);
         let user = users.getUser(socket.id);
-        if(!game.hasGame(user.room)){
+        if(!game.hasGame(user.room) && users.getUsersInRoom(user.room).length > 1){
             io.to(user.room).emit("disableStart");
             game.games.push(new game.Game(user.room, users.getUsersInRoom(user.room), (res) =>{
                 io.to(user.room).emit('updateTurn', res);
+            }, (winner) =>{
+                
+                io.to(user.room).emit("gameOver", winner);
+                io.to(user.room).emit("enableStart");
+                game.removeGame(user.room);
             }));
         }
         

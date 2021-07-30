@@ -6,6 +6,7 @@ const gameForm = document.getElementById('gameForm');
 const gameFormText = document.getElementById('gameFormText');
 const prevWord = document.getElementById('prevWord');
 const startButton = document.getElementById('startButton');
+const leaderboard = document.getElementById('leaderboard');
 
 const socket = io();
 
@@ -78,11 +79,30 @@ socket.on("disableStart", ()=>{
     disableStart();
 })
 
+socket.on("enableStart", ()=>{
+    enableStart();
+})
+
 socket.on("updateTurn", (res) =>{ 
-    //res.prevWord, res.prevUsername, res.currentUsername
+    //res.prevWord, res.prevUsername, res.currentUsername, users
     prevWord.innerHTML = res.prevUsername + "'s previous word: " + res.prevWord;
     gameStatus.innerHTML = res.currentUsername + "'s turn:";
+
+    //update leaderboard
+    let lb = "";
+    for(let i = 0; i < res.users.length; i ++){
+        lb += res.users[i].username + ": " + res.users[i].lives + "<br>";
+    }
+    leaderboard.innerHTML = lb;
+    //console.log(lb);
+
 });
+
+socket.on("gameOver", (winner) =>{
+    //winner is user object
+    let username = winner.username
+    gameStatus.innerHTML = username + " has won!";
+})
 
 
 //functions

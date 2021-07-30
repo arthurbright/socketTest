@@ -4,7 +4,7 @@ const key = '8e42cec7-65c7-405' + 'c-b6b7-999cf3dbe6df'
 
 function isWord(str, callback){
     //filter out spaces
-    str = str.trim();
+    str = str.trim().toLowerCase();
     if(str.indexOf(' ') > -1){
         callback(false);
         return;
